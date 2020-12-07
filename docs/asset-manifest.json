@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/supermarket-tycoon/static/css/main.bd3ec610.chunk.css",
-    "main.js": "/supermarket-tycoon/static/js/main.2cdd1848.chunk.js",
-    "main.js.map": "/supermarket-tycoon/static/js/main.2cdd1848.chunk.js.map",
+    "main.css": "/supermarket-tycoon/static/css/main.f0d0b2e2.chunk.css",
+    "main.js": "/supermarket-tycoon/static/js/main.fb718553.chunk.js",
+    "main.js.map": "/supermarket-tycoon/static/js/main.fb718553.chunk.js.map",
     "runtime-main.js": "/supermarket-tycoon/static/js/runtime-main.f49b66e8.js",
     "runtime-main.js.map": "/supermarket-tycoon/static/js/runtime-main.f49b66e8.js.map",
     "static/css/2.6414bb7b.chunk.css": "/supermarket-tycoon/static/css/2.6414bb7b.chunk.css",
-    "static/js/2.5a150cf1.chunk.js": "/supermarket-tycoon/static/js/2.5a150cf1.chunk.js",
-    "static/js/2.5a150cf1.chunk.js.map": "/supermarket-tycoon/static/js/2.5a150cf1.chunk.js.map",
+    "static/js/2.5d94b9f8.chunk.js": "/supermarket-tycoon/static/js/2.5d94b9f8.chunk.js",
+    "static/js/2.5d94b9f8.chunk.js.map": "/supermarket-tycoon/static/js/2.5d94b9f8.chunk.js.map",
     "index.html": "/supermarket-tycoon/index.html",
-    "precache-manifest.f4eb0e6c413d65c721ea7256206d4845.js": "/supermarket-tycoon/precache-manifest.f4eb0e6c413d65c721ea7256206d4845.js",
+    "precache-manifest.44055777cb318c96c8ac63e8ef2b434a.js": "/supermarket-tycoon/precache-manifest.44055777cb318c96c8ac63e8ef2b434a.js",
     "service-worker.js": "/supermarket-tycoon/service-worker.js",
     "static/css/2.6414bb7b.chunk.css.map": "/supermarket-tycoon/static/css/2.6414bb7b.chunk.css.map",
-    "static/css/main.bd3ec610.chunk.css.map": "/supermarket-tycoon/static/css/main.bd3ec610.chunk.css.map",
-    "static/js/2.5a150cf1.chunk.js.LICENSE.txt": "/supermarket-tycoon/static/js/2.5a150cf1.chunk.js.LICENSE.txt"
+    "static/css/main.f0d0b2e2.chunk.css.map": "/supermarket-tycoon/static/css/main.f0d0b2e2.chunk.css.map",
+    "static/js/2.5d94b9f8.chunk.js.LICENSE.txt": "/supermarket-tycoon/static/js/2.5d94b9f8.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f49b66e8.js",
     "static/css/2.6414bb7b.chunk.css",
-    "static/js/2.5a150cf1.chunk.js",
-    "static/css/main.bd3ec610.chunk.css",
-    "static/js/main.2cdd1848.chunk.js"
+    "static/js/2.5d94b9f8.chunk.js",
+    "static/css/main.f0d0b2e2.chunk.css",
+    "static/js/main.fb718553.chunk.js"
   ]
 }
