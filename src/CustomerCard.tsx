@@ -19,12 +19,12 @@ const ItemBadge = (props: { item: CartItem }) => {
 const CustomerCard = (props: { customer: Customer, index: number }) => {
   const { customer, index } = props;
   const state = useContext(Context);
-  return <div className={classNames("card flex-grow-1 mx-4", { "shadow p-3 mb-5 bg-white rounded": customer.shopping })}>
+  return <div className={classNames("card mx-4", { "shadow bg-white rounded": customer.shopping })}>
     <div className="card-body">
       <div className="d-flex justify-content-between">
         <h5 className="card-title">{customer.name}</h5>
         {(Array(customer.coupons).fill(0).map((_, i) => <div key={i}>
-          <span className="badge badge-warning">Coupon</span>
+          <span className="badge badge-warning mx-2">Coupon</span>
         </div>))}
         {customer.bonus && <span className="text-success">${customer.bonus}</span>}
         <span className="text-danger">$-{customer.penalty}</span>
@@ -38,7 +38,6 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
       </div>
       <div className="card-text">
         <table className="table table-sm">
-          <thead><tr><th>Type</th><th>Chance</th><th></th><th></th></tr></thead>
           <tbody>
             {Object.entries(customer.demand).filter(([type, demand]) => demand.length > 0).map(([type, demand]) => <tr key={type}>
               <td>{DeptName[type]}</td><td>{probability(demand).toFixed(0)}%</td>
@@ -72,22 +71,28 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
           </tbody>
         </table>
       </div>
-      {state.canStartCustomer(customer) &&
-        <button className="btn btn-primary btn-sm" onClick={() => state.startCustomer(index)}>
-          Start
+      <div className="d-flex justify-content-between">
+        {state.canStartCustomer(customer) &&
+          <button className="btn btn-primary btn-sm" onClick={() => state.startCustomer(index)}>
+            Start
         </button>}
-      {state.canAdvanceCustomer(customer) &&
-        <button className="btn btn-primary btn-sm" onClick={() => state.advanceCustomer()}>
-          Next
+        {state.canAdvanceCustomer(customer) &&
+          <button className="btn btn-primary btn-sm" onClick={() => state.advanceCustomer()}>
+            Next
         </button>}
-      {state.canFinishCustomer(customer) &&
-        <button className="btn btn-primary btn-sm" onClick={() => state.finishCustomer()}>
-          Finish
+        {state.canFinishCustomer(customer) &&
+          <button className="btn btn-primary btn-sm" onClick={() => state.finishCustomer()}>
+            Finish
         </button>}
-      {state.mustFailCustomer(customer) &&
-        <button className="btn btn-danger btn-sm" onClick={() => state.failCustomer()}>
-          Fail
+        {state.mustFailCustomer(customer) &&
+          <button className="btn btn-danger btn-sm" onClick={() => state.failCustomer()}>
+            Fail
         </button>}
+        {state.canStartRestocking() &&
+          <button className="btn btn-primary btn-sm" onClick={() => state.startRestocking(index)}>
+            Restock
+        </button>}
+      </div>
     </div>
   </div>;
 }

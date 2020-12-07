@@ -7,10 +7,14 @@ const BlankCustomerCard = (props: { index: number }) => {
   return <div className={"card flex-grow-1 mx-4"}>
     <div className="card-body d-flex flex-column">
       <h5 className="card-title">Customer {index + 1}</h5>
-      <div className="d-flex flex-grow-1 align-items-center justify-content-center">
-        {state.currentCustomerIndex === undefined &&
+      <div className="d-flex align-items-center justify-content-around">
+        {state.canStartCustomer(state.currentCustomers[index]) &&
           <button className="btn btn-primary btn-sm" onClick={() => state.startCustomer(index)}>
             Start
+          </button>}
+        {state.canStartRestocking() &&
+          <button className="btn btn-primary btn-sm" onClick={() => state.startRestocking(index)}>
+            Restock
           </button>}
       </div>
     </div>

@@ -9,9 +9,9 @@ import { Context, State } from './State';
 import { useLocalStorageState } from './Persistence';
 import BlankCustomerCard from './BlankCustomerCard';
 import CustomerCard from './CustomerCard';
-import Department from './Department';
 import TopBar from './TopBar';
 import StockRoom from './StockRoom';
+import Store from './Store';
 
 export default function App() {
   const [i, setCount] = useState(0);
@@ -24,19 +24,21 @@ export default function App() {
   return <Router>
     <Switch>
       <Route path="/">
-        <div className="d-flex flex-column m-4">
+        <div className="d-flex flex-column" style={{ width: "100%", maxWidth: "1400px", marginRight: 'auto', marginLeft: 'auto' }}>
           <Context.Provider value={state}>
             <TopBar />
-            <div className="d-flex flex-wrap">
-              <div className="d-flex flex-grow-1 mr-4">
-                {Object.entries(state.departments).map(([key, dept]) => <Department key={key} deptKey={key} dept={dept} />)}
+            <div className="d-flex flex-column flex-wrap">
+              <div className="d-flex flex-row flex-grow-1">
+                <Store />
+                <StockRoom />
               </div>
-              <StockRoom />
-              {state.currentCustomers.map((customer, i: number) => (
-                customer.visible ?
-                  <CustomerCard key={i} customer={customer} index={i} /> :
-                  <BlankCustomerCard key={i} index={i} />
-              ))}
+              <div className="d-flex">
+                {state.currentCustomers.map((customer, i: number) => (
+                  customer.visible ?
+                    <CustomerCard key={i} customer={customer} index={i} /> :
+                    <BlankCustomerCard key={i} index={i} />
+                ))}
+              </div>
             </div>
           </Context.Provider>
         </div>
