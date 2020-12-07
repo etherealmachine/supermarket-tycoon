@@ -2,7 +2,6 @@ import React from 'react';
 import { produce } from 'immer';
 
 let undoStack = [] as string[];
-let redoStack = [] as string[];
 
 function modify(options?: { undoable: boolean }) {
   return function (
@@ -593,7 +592,7 @@ export const DeptName: { [key: string]: string } = {
   produce: 'Produce',
 }
 
-export const Expirations = ['every', 2, 3, 4, 5, 6, 'never'];
+export const Expirations = ['every', '2', '3', '4', '5', '6', 'never'];
 
 function shuffle<T>(array: Array<T>) {
   let i = array.length;
@@ -646,6 +645,7 @@ export class State {
 
   cash: number = 0
   round: number = 0
+  phase?: 'purchasing' | 'stocking' | 'shopping1' | 'restocking' | 'shopping2' | 'cleanup' = 'purchasing'
   departments = initialDepartments()
   stockRoom: { [key: string]: Stock } = {}
   customers = initialCustomers()
@@ -660,10 +660,17 @@ export class State {
     produce: 0,
   }
 
+  constructor() {
+    if (this.cash === 0 && this.round === 0) {
+      this.setup();
+    }
+  }
+
   @modify()
   setup() {
     this.cash = 15;
     this.round = 0;
+    this.phase = 'purchasing';
     this.departments = initialDepartments();
     this.stockRoom = {};
     Object.keys(DeptName).forEach(key => {
@@ -690,6 +697,7 @@ export class State {
       produce: 0,
     };
     this.currentCustomerIndex = undefined;
+    this.prepare();
   }
 
   @modify()
@@ -707,25 +715,102 @@ export class State {
     this.currentCustomerIndex = undefined;
   }
 
+  @modify({ undoable: true })
+  startRestocking(customerIndex: number) {
+    this.phase = 'restocking';
+    if (this.currentCustomerIndex === undefined) {
+      this.currentCustomers.slice(customerIndex, 1);
+    } else if (this.currentCustomerIndex === customerIndex) {
+      const customer = this.currentCustomers[this.currentCustomerIndex];
+      this.cash -= customer.penalty;
+      customer.roll = undefined;
+      this.currentCustomers[this.currentCustomerIndex].shopping = false;
+      this.currentCustomers.splice(this.currentCustomerIndex, 1);
+      this.currentCustomerIndex = undefined;
+    }
+  }
+
   @modify()
+  startCleanup() {
+    this.currentCustomers = [];
+    this.currentCustomerIndex = undefined;
+    Object.values(this.departments).forEach(dept => {
+      if (this.round in dept.stock) {
+        this.cash -= dept.stock[this.round];
+        dept.stock[this.round] = 0;
+      }
+      if ('every' in dept.stock) {
+        this.cash -= dept.stock['every'];
+        dept.stock['every'] = 0;
+      }
+    });
+    Object.values(this.stockRoom).forEach(stock => {
+      if (this.round in stock) {
+        this.cash -= stock[this.round];
+        stock[this.round] = 0;
+      }
+      if ('every' in stock) {
+        this.cash -= stock['every'];
+        stock['every'] = 0;
+      }
+    });
+  }
+
+  @modify()
+  endGame() {
+  }
+
+  @modify({ undoable: true })
+  nextPhase() {
+    if (this.phase === undefined) {
+      this.phase = 'purchasing';
+      this.prepare();
+      return;
+    } else if (this.phase === 'purchasing') {
+      this.phase = 'stocking';
+      return;
+    } else if (this.phase === 'stocking') {
+      this.phase = 'shopping1';
+      return;
+    } else if (this.phase === 'shopping1' || this.phase === 'shopping2') {
+      this.phase = 'cleanup';
+      this.startCleanup();
+      return;
+    } else if (this.phase === 'restocking') {
+      this.phase = 'shopping2';
+      return;
+    } else if (this.phase === 'cleanup') {
+      if (this.round === 6) {
+        this.phase = undefined;
+        this.endGame();
+        return;
+      }
+      this.phase = 'purchasing';
+      this.prepare();
+      return;
+    }
+  }
+
+  @modify({ undoable: true })
   startSale(department: DeptKey) {
     this.departments[department].sale = true;
   }
 
-  @modify()
+  @modify({ undoable: true })
   startCustomer(i: number) {
     this.currentCustomers[i].visible = true;
     this.currentCustomers[i].shopping = true;
     this.currentCustomerIndex = i;
+    this.advanceCustomer();
   }
 
-  @modify()
+  @modify({ undoable: true })
   advanceCustomer() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     this.currentCustomers[this.currentCustomerIndex].roll = (Math.floor(Math.random() * 6) + 1) + (Math.floor(Math.random() * 6) + 1);
   }
 
-  @modify()
+  @modify({ undoable: true })
   finishCustomer() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
@@ -735,13 +820,13 @@ export class State {
     this.currentCustomerIndex = undefined;
   }
 
-  @modify()
+  @modify({ undoable: true })
   buyStock(dept: string) {
     this.cash -= this.currentCosts[dept];
     this.stockRoom[dept][this.expiration(dept)]++;
   }
 
-  @modify()
+  @modify({ undoable: true })
   moveStock(dept: string, expiry: string | number) {
     this.stockRoom[dept][expiry]--;
     this.departments[dept].stock[expiry]++;
@@ -749,7 +834,7 @@ export class State {
 
   removeOldestItem(dept: string) {
     for (let i = 0; i < Expirations.length; i++) {
-      const expiry = Expirations.reverse()[i];
+      const expiry = Expirations[i];
       const inStock = this.departments[dept].stock[expiry];
       if (inStock) {
         this.departments[dept].stock[expiry]--;
@@ -759,7 +844,7 @@ export class State {
     return false;
   }
 
-  @modify()
+  @modify({ undoable: true })
   purchase() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
@@ -790,13 +875,14 @@ export class State {
     customer.roll = undefined;
   }
 
-  @modify()
+  @modify({ undoable: true })
   purchaseWithCoupon() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
     if (customer.roll === undefined) throw new Error('cannot purchase without roll');
     const options = couponOptions[customer.roll];
     const opts = Object.keys(customer.demand).filter(d => options.find(option => customer.demand[d].includes(option)));
+    if (opts[1] === undefined) opts[1] = opts[0];
     opts.forEach(opt => this.removeOldestItem(opt));
     opts.forEach(opt => customer.cart.push({
       dept: opt,
@@ -809,7 +895,7 @@ export class State {
     customer.roll = undefined;
   }
 
-  @modify()
+  @modify({ undoable: true })
   impulseBuy(dept: string) {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
@@ -823,7 +909,7 @@ export class State {
     };
   }
 
-  @modify()
+  @modify({ undoable: true })
   failCustomer() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
@@ -840,16 +926,14 @@ export class State {
 
   @modify()
   undo() {
-
-  }
-
-  @modify()
-  redo() {
-
+    if (undoStack.length === 0) return;
+    const prev = undoStack.pop();
+    if (!prev) return;
+    Object.assign(this, JSON.parse(prev));
   }
 
   canStartCustomer(customer: Customer) {
-    return !customer.shopping && this.currentCustomerIndex === undefined;
+    return ['shopping1', 'shopping2'].includes(this.phase || '') && !customer.shopping && this.currentCustomerIndex === undefined;
   }
 
   canAdvanceCustomer(customer: Customer) {
@@ -884,9 +968,11 @@ export class State {
   canPurchaseWithCoupon(customer: Customer, dept: string) {
     if (customer.roll === undefined) return false;
     if (customer.coupons === 0) return false;
+    if (customer.cart.length + 2 > customer.cartSize) return false;
     const options = couponOptions[customer.roll];
     const [opt1, opt2] = Object.keys(customer.demand).filter(d => options.find(option => customer.demand[d].includes(option)));
-    return (opt1 === dept || opt2 === dept) && this.hasStock(opt1) && this.hasStock(opt2) && customer.cart.length < customer.cartSize;
+    if (opt2 === undefined) return opt1 === dept && this.hasStock(opt1, 2);
+    return (opt1 === dept || opt2 === dept) && this.hasStock(opt1) && this.hasStock(opt2);
   }
 
   canImpulseBuy(customer: Customer, dept: string) {
@@ -899,8 +985,8 @@ export class State {
     return customer.impulseBuy === undefined;
   }
 
-  hasStock(dept: string) {
-    return Object.values(this.departments[dept].stock).reduce((sum, stock) => sum + stock, 0) > 0;
+  hasStock(dept: string, count: number = 1) {
+    return Object.values(this.departments[dept].stock).reduce((sum, stock) => sum + stock, 0) >= count;
   }
 
   price(dept: string): number {
@@ -917,6 +1003,26 @@ export class State {
     return Object.values(this.stockRoom).reduce(
       (sum, dept) => sum + Object.values(dept).reduce(
         (sum, stock) => sum + stock, 0), 0);
+  }
+
+  canBuyStock(dept: string): boolean {
+    return this.cash >= this.currentCosts[dept] && this.inStockRoom() < 20;
+  }
+
+  canMoveStock(dept: string, expiry: string): boolean {
+    return this.inStore() < 15;
+  }
+
+  canStartRestocking() {
+    return this.phase === 'shopping1' && (this.currentCustomerIndex === undefined || this.canAdvanceCustomer(this.currentCustomers[this.currentCustomerIndex]));
+  }
+
+  canAdvancePhase() {
+    return !(['shopping1', 'shopping2'].includes(this.phase || '') && this.currentCustomers.length > 0);
+  }
+
+  canUndo() {
+    return undoStack.length > 0;
   }
 
   expiration(type: string): string | number {
