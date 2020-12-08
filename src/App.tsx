@@ -25,7 +25,7 @@ export default function App() {
   (window as any).app = state;
   return <Router>
     <Switch>
-      <Route path="/game">
+      <Route path="/supermarket-tycoon/game">
         <div className="d-flex flex-column" style={{ width: "100%", maxWidth: "1400px", marginRight: 'auto', marginLeft: 'auto' }}>
           <Context.Provider value={state}>
             <TopBar />
