@@ -756,10 +756,6 @@ export class State {
     });
   }
 
-  @modify()
-  endGame() {
-  }
-
   @modify({ undoable: true })
   nextPhase() {
     if (this.phase === undefined) {
@@ -782,7 +778,6 @@ export class State {
     } else if (this.phase === 'cleanup') {
       if (this.round === 6) {
         this.phase = undefined;
-        this.endGame();
         return;
       }
       this.phase = 'purchasing';
@@ -814,7 +809,7 @@ export class State {
   finishCustomer() {
     if (this.currentCustomerIndex === undefined) throw new Error('no customer');
     const customer = this.currentCustomers[this.currentCustomerIndex];
-    if (customer.bonus) this.cash -= customer.bonus;
+    if (customer.bonus) this.cash += customer.bonus;
     customer.shopping = false;
     this.currentCustomers.splice(this.currentCustomerIndex, 1);
     this.currentCustomerIndex = undefined;
@@ -944,7 +939,7 @@ export class State {
   }
 
   canStartCustomer(customer: Customer) {
-    return ['shopping1', 'shopping2'].includes(this.phase || '') && !customer.shopping && this.currentCustomerIndex === undefined;
+    return this.cash >= 0 && ['shopping1', 'shopping2'].includes(this.phase || '') && !customer.shopping && this.currentCustomerIndex === undefined;
   }
 
   canAdvanceCustomer(customer: Customer) {
@@ -1025,7 +1020,7 @@ export class State {
   }
 
   canStartRestocking() {
-    return this.phase === 'shopping1' && (this.currentCustomerIndex === undefined || this.canAdvanceCustomer(this.currentCustomers[this.currentCustomerIndex]));
+    return this.cash >= 0 && this.phase === 'shopping1' && (this.currentCustomerIndex === undefined || this.canAdvanceCustomer(this.currentCustomers[this.currentCustomerIndex]));
   }
 
   canAdvancePhase() {
@@ -1041,11 +1036,11 @@ export class State {
       case 'produce':
         return 'every';
       case 'bakery':
-        return this.round + 2;
+        return Math.min(6, this.round + 2);
       case 'dairy':
-        return this.round + 3;
+        return Math.min(6, this.round + 3);
       case 'dryGoods':
-        return this.round + 4;
+        return Math.min(6, this.round + 4);
       case 'frozen':
         return 'never';
     }

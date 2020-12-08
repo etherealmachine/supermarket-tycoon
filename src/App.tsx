@@ -13,6 +13,7 @@ import CustomerCard from './CustomerCard';
 import TopBar from './TopBar';
 import StockRoom from './StockRoom';
 import Store from './Store';
+import GameOver from './GameOver';
 
 export default function App() {
   const [i, setCount] = useState(0);
@@ -28,6 +29,7 @@ export default function App() {
         <div className="d-flex flex-column" style={{ width: "100%", maxWidth: "1400px", marginRight: 'auto', marginLeft: 'auto' }}>
           <Context.Provider value={state}>
             <TopBar />
+            <GameOver />
             <div className="d-flex flex-column flex-wrap">
               <div className="d-flex flex-row flex-grow-1">
                 <Store />
