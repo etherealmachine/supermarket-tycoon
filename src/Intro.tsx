@@ -19,7 +19,7 @@ const Intro = (_props: {}) => {
     <hr className="my-4" style={{ width: "100%" }} />
     <div className="d-flex justify-content-center">
       <a className="btn btn-primary btn-lg mr-4" href={process.env.PUBLIC_URL + '/rules.pdf'} role="button">Download Rules</a>
-      <a className="btn btn-success btn-lg" style={{ width: '200px' }} href="/supermarket-tycoon/game" role="button">Play</a>
+      <a className="btn btn-success btn-lg" style={{ width: '200px' }} href="#/game" role="button">Play</a>
     </div>
     <div className="d-flex justify-content-center mt-5">
       <p>Copyright James Pettit, 2020</p>

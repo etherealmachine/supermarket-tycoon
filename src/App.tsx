@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
+  HashRouter,
 } from "react-router-dom";
 
 import { Context, State } from './State';
@@ -23,9 +23,9 @@ export default function App() {
     setCount(i + 1);
   };
   (window as any).app = state;
-  return <Router>
+  return <HashRouter>
     <Switch>
-      <Route path="/supermarket-tycoon/game">
+      <Route path="/game">
         <div className="d-flex flex-column" style={{ width: "100%", maxWidth: "1400px", marginRight: 'auto', marginLeft: 'auto' }}>
           <Context.Provider value={state}>
             <TopBar />
@@ -50,5 +50,5 @@ export default function App() {
         <Intro />
       </Route>
     </Switch>
-  </Router >;
+  </HashRouter >;
 }
