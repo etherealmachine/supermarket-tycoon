@@ -7,6 +7,7 @@ import {
 
 import { Context, State } from './State';
 import { useLocalStorageState } from './Persistence';
+import Intro from './Intro';
 import BlankCustomerCard from './BlankCustomerCard';
 import CustomerCard from './CustomerCard';
 import TopBar from './TopBar';
@@ -23,7 +24,7 @@ export default function App() {
   (window as any).app = state;
   return <Router>
     <Switch>
-      <Route path="/">
+      <Route path="/game">
         <div className="d-flex flex-column" style={{ width: "100%", maxWidth: "1400px", marginRight: 'auto', marginLeft: 'auto' }}>
           <Context.Provider value={state}>
             <TopBar />
@@ -42,6 +43,9 @@ export default function App() {
             </div>
           </Context.Provider>
         </div>
+      </Route>
+      <Route path="/">
+        <Intro />
       </Route>
     </Switch>
   </Router >;

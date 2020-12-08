@@ -6,7 +6,7 @@ const Department = (props: { deptKey: string, dept: DepartmentType }) => {
   const { deptKey, dept } = props;
   const state = useContext(Context);
   return <div className="card flex-grow-1 mx-3 mb-4">
-    <div className="card-body d-flex flex-column">
+    <div className="card-body d-flex flex-column py-2">
       <div className="d-flex justify-content-center">
         <h5>{DeptName[deptKey]}</h5>
         <div className="ml-auto">Price: ${dept.sale ? dept.salePrice : dept.price}</div>
