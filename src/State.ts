@@ -283,9 +283,9 @@ const initialCustomers: () => Customer[] = () => [
     cartSize: 2,
     cart: [],
     demand: {
-      frozen: [10, 11, 12],
+      frozen: [8, 9],
       dairy: [2, 3, 4],
-      produce: [],
+      produce: [10, 11, 12],
       bakery: [7],
       dryGoods: [5, 6],
     },
