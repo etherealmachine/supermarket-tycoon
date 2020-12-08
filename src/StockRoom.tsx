@@ -40,14 +40,19 @@ const StockRoom = () => {
                 </button>}
               </td>)}
             </tr>
-            {Expirations.map(expiry => <tr key={expiry}>
-              <td>{expiry}</td>
-              {Object.keys(DeptName).map((key) => <td key={key}>
-                <span className="d-flex align-items-center justify-content-center" style={{ height: '31px' }}>
-                  {(state.stockRoom[key] && state.stockRoom[key][expiry]) || 0}
-                </span>
-              </td>)}
-            </tr>)}
+            {Expirations.filter(
+              expiry => {
+                if (expiry === 'every') return true;
+                if (expiry === 'never') return true;
+                return parseInt(expiry) >= state.round;
+              }).map(expiry => <tr key={expiry}>
+                <td>{expiry}</td>
+                {Object.keys(DeptName).map((key) => <td key={key}>
+                  <span className="d-flex align-items-center justify-content-center" style={{ height: '31px' }}>
+                    {(state.stockRoom[key] && state.stockRoom[key][expiry]) || 0}
+                  </span>
+                </td>)}
+              </tr>)}
           </tbody>
         </table>
       </div>

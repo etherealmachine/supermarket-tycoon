@@ -31,10 +31,10 @@ const TopBar = (_props: {}) => {
         {i !== a.length - 1 && <FontAwesomeIcon icon={faArrowRight} />}
       </span>
       )}
-      <button
+      {(state.round < 6 || state.phase !== undefined) && state.cash >= 0 && <button
         disabled={!state.canAdvancePhase()}
         className="m-2 btn btn-primary btn-sm"
-        onClick={() => state.nextPhase()}>Next Phase</button>
+        onClick={() => state.nextPhase()}>Next Phase</button>}
     </div>
     <div className="ml-auto">
       <button disabled={!state.canUndo()} className="m-2 btn btn-light btn-sm" onClick={() => state.undo()}>Undo</button>

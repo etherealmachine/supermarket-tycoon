@@ -32,7 +32,7 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
       <div className="d-flex align-items-center justify-content-between">
         <div className="d-flex">
           {customer.impulseBuy && <ItemBadge item={customer.impulseBuy} />}
-          {customer.cart.map(item => <ItemBadge item={item} />)}
+          {customer.cart.map((item, i) => <ItemBadge key={i} item={item} />)}
         </div>
         <div>/&nbsp;{customer.cartSize}</div>
       </div>
@@ -52,6 +52,10 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
                     })}>
                   <FontAwesomeIcon icon={faPlus} />
                 </button>}
+                {demand.includes(customer.roll || 0) && state.mustFailCustomer(customer) &&
+                  <button className="btn btn-danger btn-sm" onClick={() => state.failCustomer()}>
+                    Fail
+                  </button>}
               </td>
               <td>
                 {state.canPurchaseWithCoupon(customer, type) && <button
@@ -83,10 +87,6 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
         {state.canFinishCustomer(customer) &&
           <button className="btn btn-primary btn-sm" onClick={() => state.finishCustomer()}>
             Finish
-        </button>}
-        {state.mustFailCustomer(customer) &&
-          <button className="btn btn-danger btn-sm" onClick={() => state.failCustomer()}>
-            Fail
         </button>}
         {state.canStartRestocking() &&
           <button className="btn btn-primary btn-sm" onClick={() => state.startRestocking(index)}>
