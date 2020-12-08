@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/supermarket-tycoon/precache-manifest.a85ce4cd86fb92c2ca21d963124f73bb.js"
+  "/supermarket-tycoon/precache-manifest.d0b73b170805ee1ff81e857686d4dab8.js"
 );
 
 self.addEventListener('message', (event) => {

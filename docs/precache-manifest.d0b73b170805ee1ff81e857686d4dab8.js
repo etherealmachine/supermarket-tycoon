@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "caf654077ae637acc4bb65158ba0177e",
+    "revision": "bcf46a564ab365312f3a295a658603c1",
     "url": "/supermarket-tycoon/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/supermarket-tycoon/static/css/2.6414bb7b.chunk.css"
   },
   {
-    "revision": "10de4c32c0105964ad94",
+    "revision": "9519a97893f9f9585cf0",
     "url": "/supermarket-tycoon/static/css/main.f0d0b2e2.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/supermarket-tycoon/static/js/2.691948db.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "10de4c32c0105964ad94",
-    "url": "/supermarket-tycoon/static/js/main.d2eb0f4e.chunk.js"
+    "revision": "9519a97893f9f9585cf0",
+    "url": "/supermarket-tycoon/static/js/main.d9bb4d5b.chunk.js"
   },
   {
     "revision": "84f7789ea2e8c2284895",
