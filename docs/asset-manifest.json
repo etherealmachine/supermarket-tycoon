@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/supermarket-tycoon/static/css/main.f0d0b2e2.chunk.css",
-    "main.js": "/supermarket-tycoon/static/js/main.d9bb4d5b.chunk.js",
-    "main.js.map": "/supermarket-tycoon/static/js/main.d9bb4d5b.chunk.js.map",
+    "main.js": "/supermarket-tycoon/static/js/main.07702718.chunk.js",
+    "main.js.map": "/supermarket-tycoon/static/js/main.07702718.chunk.js.map",
     "runtime-main.js": "/supermarket-tycoon/static/js/runtime-main.f49b66e8.js",
     "runtime-main.js.map": "/supermarket-tycoon/static/js/runtime-main.f49b66e8.js.map",
     "static/css/2.6414bb7b.chunk.css": "/supermarket-tycoon/static/css/2.6414bb7b.chunk.css",
-    "static/js/2.691948db.chunk.js": "/supermarket-tycoon/static/js/2.691948db.chunk.js",
-    "static/js/2.691948db.chunk.js.map": "/supermarket-tycoon/static/js/2.691948db.chunk.js.map",
+    "static/js/2.663b90e5.chunk.js": "/supermarket-tycoon/static/js/2.663b90e5.chunk.js",
+    "static/js/2.663b90e5.chunk.js.map": "/supermarket-tycoon/static/js/2.663b90e5.chunk.js.map",
     "index.html": "/supermarket-tycoon/index.html",
-    "precache-manifest.d0b73b170805ee1ff81e857686d4dab8.js": "/supermarket-tycoon/precache-manifest.d0b73b170805ee1ff81e857686d4dab8.js",
+    "precache-manifest.a2cdeae34dd54ba31d6e25cc58be65ca.js": "/supermarket-tycoon/precache-manifest.a2cdeae34dd54ba31d6e25cc58be65ca.js",
     "service-worker.js": "/supermarket-tycoon/service-worker.js",
     "static/css/2.6414bb7b.chunk.css.map": "/supermarket-tycoon/static/css/2.6414bb7b.chunk.css.map",
     "static/css/main.f0d0b2e2.chunk.css.map": "/supermarket-tycoon/static/css/main.f0d0b2e2.chunk.css.map",
-    "static/js/2.691948db.chunk.js.LICENSE.txt": "/supermarket-tycoon/static/js/2.691948db.chunk.js.LICENSE.txt"
+    "static/js/2.663b90e5.chunk.js.LICENSE.txt": "/supermarket-tycoon/static/js/2.663b90e5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f49b66e8.js",
     "static/css/2.6414bb7b.chunk.css",
-    "static/js/2.691948db.chunk.js",
+    "static/js/2.663b90e5.chunk.js",
     "static/css/main.f0d0b2e2.chunk.css",
-    "static/js/main.d9bb4d5b.chunk.js"
+    "static/js/main.07702718.chunk.js"
   ]
 }
