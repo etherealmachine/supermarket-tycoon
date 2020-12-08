@@ -20,7 +20,7 @@ const CustomerCard = (props: { customer: Customer, index: number }) => {
   const { customer, index } = props;
   const state = useContext(Context);
   return <div className={classNames("card mx-4", { "shadow bg-white rounded": customer.shopping })}>
-    <div className="card-body">
+    <div className="card-body py-2">
       <div className="d-flex justify-content-between">
         <h5 className="card-title">{customer.name}</h5>
         {(Array(customer.coupons).fill(0).map((_, i) => <div key={i}>

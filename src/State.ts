@@ -827,9 +827,20 @@ export class State {
   }
 
   @modify({ undoable: true })
-  moveStock(dept: string, expiry: string | number) {
-    this.stockRoom[dept][expiry]--;
-    this.departments[dept].stock[expiry]++;
+  moveStock(dept: string) {
+    let moved: string | undefined;
+    for (let i = 0; i < Expirations.length; i++) {
+      const expiry = Expirations[i];
+      const inStock = this.stockRoom[dept][expiry];
+      if (inStock) {
+        this.stockRoom[dept][expiry]--;
+        moved = expiry;
+        break;
+      }
+    }
+    if (moved) {
+      this.departments[dept].stock[moved]++;
+    }
   }
 
   removeOldestItem(dept: string) {
@@ -1009,8 +1020,8 @@ export class State {
     return this.cash >= this.currentCosts[dept] && this.inStockRoom() < 20;
   }
 
-  canMoveStock(dept: string, expiry: string): boolean {
-    return this.inStore() < 15;
+  canMoveStock(dept: string): boolean {
+    return Object.values(this.stockRoom[dept]).reduce((sum, stock) => sum + stock, 0) > 0 && this.inStore() < 15;
   }
 
   canStartRestocking() {
